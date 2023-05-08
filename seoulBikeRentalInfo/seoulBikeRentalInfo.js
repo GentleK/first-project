@@ -9,7 +9,6 @@ async function getData(){
     let url = `http://openapi.seoul.go.kr:8088/${apiKey}/json/bikeList/1160/1180/`;
     const response = await fetch(url);
     const data = await response.json();
-    console.log("data", data);
     const locations = data.rentBikeStatus.row.map(spot=>[
         spot.stationName, 
         spot.stationLatitude, 

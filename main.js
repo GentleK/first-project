@@ -16,3 +16,7 @@ newsListButton.addEventListener("click", ()=>{
 document.getElementById("seoulBikeRentalInfo").addEventListener("click", ()=>{
     document.location.href = "/seoulBikeRentalInfo/seoulBikeRentalInfo.html";
 })
+
+document.getElementById("lostarkInfo").addEventListener("click", ()=>{
+    document.location.href = "/lostarkInfo/lostarkInfo.html";
+})

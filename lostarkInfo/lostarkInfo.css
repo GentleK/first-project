@@ -1,0 +1,59 @@
+a:link{
+	color:royalblue;
+    transition : 1s;
+	text-decoration: none;
+}
+a:visited {
+	color:teal;
+	text-decoration: none;
+}
+a:hover {
+	color:white;
+	background-color: skyblue;
+	text-decoration: none;
+}
+a:active{
+	color:blue;
+	background-color: white;
+	text-decoration: none;	
+}
+
+.boardSelect{
+	display: flex;
+    justify-content: space-between;
+}
+
+#searchBoard{
+	display: flex;
+	justify-content: right;
+}
+
+.boardMain{
+    padding: 1em;
+    justify-content: center;
+}
+
+.characterMainTable{
+	background-position: center;
+    background-position-y: -4rem;
+    background-repeat: no-repeat;
+	background-color: #181818;
+}
+
+.characterMainTable td{
+	color: aliceblue;
+}
+
+.boardTitle{
+	display: flex;
+	justify-content: center;
+}
+
+.characterMainButton{
+	--bs-btn-padding-y: 3px;
+    --bs-btn-font-size: 13px;
+}
+
+.pagination{
+    justify-content: center;
+}
