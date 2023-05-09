@@ -1,0 +1,9 @@
+InterM
+
+
+운영패스
+administrator/InterMPRD37!
+
+DB
+InterMDB38!
+

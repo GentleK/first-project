@@ -15,7 +15,6 @@ async function getData(){
         spot.stationLongitude,
         spot.parkingBikeTotCnt
     ]);
-    console.log("locations", locations);
     drawMap(locations);
 }
 

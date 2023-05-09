@@ -2,6 +2,7 @@ const apiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktYMk40TkRDSTJ5NTA5
 let boardData;
 let characterProfilesData;
 let characterEquipmentData;
+let characterCardsData;
 const page_max_number = 10;
 const page_group_number = 5;
 let currentPage = 1;
@@ -18,13 +19,6 @@ let goBackButton = document.getElementById("go-back");
 goBackButton.addEventListener("click", ()=>{
     document.location.href = "../index.html";
 });
-
-if( document.getElementById("comboSearchSelect") != undefined ){
-    document.getElementById("comboSearchSelect").addEventListener("change", ()=>{
-        searchType = document.getElementById("comboSearchSelect").value;
-        renderBoard();
-    });
-}
 
 const textSearch = ()=>{
     searchText = document.getElementById("textSearchInput").value;
@@ -85,7 +79,7 @@ const renderCharacterBoard = ()=>{
             <tbody>
                 <tr>
                     <td rowSpan="3" id="mainCharacterSecondLineLeft"></td>
-                    <td id="mainCharacterSecondLineRight" style="text-align:right"></td>
+                    <td id="mainCharacterSecondLineRight" style="text-align:right;width: 40%;"></td>
                 </tr>
                 <tr><td id="mainCharacterThirdLine" style="text-align:right"></td></tr>
                 <tr><td id="mainCharacterForthLine" style="text-align:right"></td></tr>
@@ -96,41 +90,41 @@ const renderCharacterBoard = ()=>{
         </table>`;
 
         let mainCharacterFirstLineHtml = 
-        `<button type="button" class="btn btn-outline-light characterMainButton">${characterProfilesData.ServerName}</button>
-        <button type="button" class="btn btn-outline-light characterMainButton">${characterProfilesData.CharacterClassName}</button>`;
+        `<div class="divBox">${characterProfilesData.ServerName}</div>
+        <div class="divBox">${characterProfilesData.CharacterClassName}</div>`;
 
         let mainCharacterSecondLineLeftHtml = 
-        `<h2>${characterProfilesData.CharacterName}</h2>`;
+        `<h4><b>${characterProfilesData.CharacterName}</b></h4>`;
         if( characterProfilesData.Title != null ){
-            mainCharacterSecondLineLeftHtml += `${characterProfilesData.Title}`;
+            mainCharacterSecondLineLeftHtml += `<div class="divSmallTitle">${characterProfilesData.Title}</div>`;
         }
 
-        let mainCharacterSecondLineRightHtml = `${characterProfilesData.GuildName} 길드`;
-        let mainCharacterThirdLineHtml = `Lv.${characterProfilesData.TownLevel}${characterProfilesData.TownName} 영지`;
-        let mainCharacterForthLineHtml = `${characterProfilesData.PvpGradeName} PVP`;
+        let mainCharacterSecondLineRightHtml = `<div class="divSmallTitle">${characterProfilesData.GuildName == null?"":characterProfilesData.GuildName}</div> <div class="divBox">길드</div>`;
+        let mainCharacterThirdLineHtml = `<div class="divSmallTitle">Lv.${characterProfilesData.TownLevel}${characterProfilesData.TownName}</div> <div class="divBox">영지</div>`;
+        let mainCharacterForthLineHtml = `<div class="divSmallTitle">${characterProfilesData.PvpGradeName}</div> <div class="divBox">PVP</div>`;
         let mainCharacterFifthLineHtml = 
         `<table class="table table-borderless" style="width:200px">
             <tbody>
             <tr>
-                <td>아이템</td>
-                <td>전투</td>
-                <td>원정대</td>
+                <td class="tdSmallTitle">아이템</td>
+                <td class="tdSmallTitle">전투</td>
+                <td class="tdSmallTitle">원정대</td>
             </tr>
             <tr>
-                <td>${characterProfilesData.ItemMaxLevel}</td>
-                <td>Lv.${characterProfilesData.CharacterLevel}</td>
-                <td>Lv.${characterProfilesData.ExpeditionLevel}</td>
+                <td class="tdLargeValue">${characterProfilesData.ItemMaxLevel}</td>
+                <td class="tdLargeValue">Lv.${characterProfilesData.CharacterLevel}</td>
+                <td class="tdLargeValue">Lv.${characterProfilesData.ExpeditionLevel}</td>
             </tr>
             </tbody>
         </table>`;
         let mainCharacterSixthLineHtml = 
-        `<ul class="nav nav-tabs">
-            <li class="nav-item"><a class="nav-link active" href="javascript:renderTabBoard('전투')">전투</a></li>
-            <li class="nav-item"><a class="nav-link" href="javascript:renderTabBoard('내실')">내실</a></li>
-            <li class="nav-item"><a class="nav-link" href="javascript:renderTabBoard('아바타')">아바타</a></li>
-            <li class="nav-item"><a class="nav-link" href="javascript:renderTabBoard('통계')">통계</a></li>
-            <li class="nav-item"><a class="nav-link" href="javascript:renderTabBoard('캐릭터')">캐릭터</a></li>
-            <li class="nav-item"><a class="nav-link" href="javascript:renderTabBoard('길드')">길드</a></li>
+        `<ul class="characterNav characterNav-tabs">
+            <li class="characterNav-item"><a class="characterNav-link active" href="javascript:renderTabBoard('전투')">전투</a></li>
+            <li class="characterNav-item"><a class="characterNav-link" href="javascript:renderTabBoard('내실')">내실</a></li>
+            <li class="characterNav-item"><a class="characterNav-link" href="javascript:renderTabBoard('아바타')">아바타</a></li>
+            <li class="characterNav-item"><a class="characterNav-link" href="javascript:renderTabBoard('통계')">통계</a></li>
+            <li class="characterNav-item"><a class="characterNav-link" href="javascript:renderTabBoard('캐릭터')">캐릭터</a></li>
+            <li class="characterNav-item"><a class="characterNav-link" href="javascript:renderTabBoard('길드')">길드</a></li>
         </ul>`;
         
         document.getElementById("noticeBoard").innerHTML = characterBoardHtml;
@@ -155,18 +149,19 @@ const renderCharacterBoard = ()=>{
 const renderTabBoard = (boardType)=>{
     let characterTabBoardHtml;
 
-    let navItemMenus = document.getElementsByClassName("nav-link");
+    let navItemMenus = document.getElementsByClassName("characterNav-link");
     for(let inx=0; inx < navItemMenus.length; inx++){
         if( navItemMenus[inx].textContent == boardType ){
-            navItemMenus[inx].className = "nav-link active";
+            navItemMenus[inx].className = "characterNav-link active";
         }else{
-            navItemMenus[inx].className = "nav-link";
+            navItemMenus[inx].className = "characterNav-link";
         }
     }
 
     if( "전투" == boardType ){
         let stats = characterProfilesData.Stats;
         let combatStats = stats.slice(0,6).sort((a,b) => a.Value < b.Value ? -1: 1);
+
         let attackPower;
         let fullVitality;
         stats.map( function(item){
@@ -182,11 +177,11 @@ const renderTabBoard = (boardType)=>{
         let effectList = [];
         equipments.map( function(item){
             let tooltip = JSON.parse(item.Tooltip);
-            //console.log("tooltip : ", tooltip);
             let characterEquipment = {};
             characterEquipment.Type = item.Type;
             characterEquipment.Step = item.Name.substr(1,2);
             characterEquipment.Quality = tooltip.Element_001.value.qualityValue;
+            characterEquipment.IconGrade = tooltip.Element_001.value.slotData.iconGrade;
 
             let effectName;
             let effectGrade;
@@ -222,11 +217,11 @@ const renderTabBoard = (boardType)=>{
         
         let effectHtml = "";
         effectList.map( function(item){
-            effectHtml += `<div style="padding-left: 10px;">${item.Name} ${item.Grade}</div>`;
+            effectHtml += `<div class="divBox">${item.Name} ${item.Grade}</div>`;
         });
 
         let equipmentHtml = `<table><tr>`;
-        characterEquipmentList.map( function(item){
+        characterEquipmentList.map( function(item, index){
             let qualityBGColor = "blue"
             if( parseInt(item.Quality) == 100 ){
                 qualityBGColor = "#EA6811"
@@ -242,34 +237,192 @@ const renderTabBoard = (boardType)=>{
                 qualityBGColor = "#FF0000";
             }
 
+            let backGradientColor;
+            if( item.IconGrade > 5 ){
+                backGradientColor = "#CFBC8F";
+            }else if( item.IconGrade > 4 ){
+                backGradientColor = "#973C06";
+            }else if( item.IconGrade <= 4 ){
+                backGradientColor = "#945904";
+            }
+
+            let weaponMargin = "";
+            if( index == 0 ){
+                weaponMargin = "margin-right: 10px;";
+            }
+
             equipmentHtml += 
             `<td style="text-align: center;padding-right: 10px;">
-                <div><img src="${item.Image}" /></div>
-                <div style="background-color: ${qualityBGColor};">${item.Quality}</div>
-                <div>${item.Type}${item.Step}</div>
+                <div style="${weaponMargin}"><img src="${item.Image}" style="background: linear-gradient(160deg, black, ${backGradientColor});border-radius: 5px 5px 0px 0px;" /></div>
+                <div style="background-color: ${qualityBGColor};border-radius: 0px 0px 5px 5px;${weaponMargin}">${item.Quality}</div>
+                <div class="divBox" style="margin-top: 5px;${weaponMargin}">${item.Type}${item.Step}</div>
             </td>`
         });
         equipmentHtml += `</tr></table>`;
 
+        let accessoryDataList = characterEquipmentData.slice(6,13);
+        let stoneData = accessoryDataList.splice(5,1);
+        accessoryDataList.push(...stoneData);
+
+        let accessoryQualityNum = 0;
+        let accessoryQualitySum = 0;
+        let accessoryAttributeSum = 0;
+        let accessoryHtml = `<table><tr>`;
+        accessoryDataList.map( function(item, index){
+            let tooltip = JSON.parse(item.Tooltip);
+
+            let qualityBGColor = "blue"
+            let qualityValue = tooltip.Element_001.value.qualityValue;
+            if( parseInt(qualityValue) == 100 ){
+                qualityBGColor = "#EA6811"
+            }else if( parseInt(qualityValue) > 90 ){
+                qualityBGColor = "#DF18E3"
+            }else if( parseInt(qualityValue) > 70 ){
+                qualityBGColor = "#1260EB"
+            }else if( parseInt(qualityValue) > 30 ){
+                qualityBGColor = "#09AE09"
+            }else if( parseInt(qualityValue) > 20 ){
+                qualityBGColor = "#A79300"
+            }else{
+                qualityBGColor = "#FF0000";
+            }
+            
+            if( index < 5 ){
+                accessoryQualityNum++;
+                accessoryQualitySum += parseInt(qualityValue);
+                let accessoryAttribute = tooltip.Element_005.value.Element_001;
+                if( index == 0 ){
+                    accessoryAttributeSum += parseInt(accessoryAttribute.substr(accessoryAttribute.indexOf("+")+1, accessoryAttribute.indexOf("<BR>")-4));
+                    accessoryAttributeSum += parseInt(accessoryAttribute.substr(accessoryAttribute.lastIndexOf("+")+1, accessoryAttribute.length));
+                }else{
+                    accessoryAttributeSum += parseInt(accessoryAttribute.substr(accessoryAttribute.lastIndexOf("+")+1, accessoryAttribute.length));
+                }
+
+            }else if( index == 5 ){
+                qualityBGColor = "#454545";
+                qualityValue = "11.5%"
+            }else if( index == 6 ){
+                qualityBGColor = "#DF18E3";
+                let indentStringElement;
+                if( "IndentStringGroup" == tooltip.Element_005.type ){
+                    indentStringElement = tooltip.Element_005.value.Element_000.contentStr;
+                }else{
+                    indentStringElement = tooltip.Element_006.value.Element_000.contentStr;
+                }
+
+                qualityValue = 
+                `${indentStringElement.Element_000.contentStr.substr(indentStringElement.Element_000.contentStr.indexOf("<BR>")-1, 1)}
+                ${indentStringElement.Element_001.contentStr.substr(indentStringElement.Element_001.contentStr.indexOf("<BR>")-1, 1)}
+                ${indentStringElement.Element_002.contentStr.substr(indentStringElement.Element_002.contentStr.indexOf("<BR>")-1, 1)}
+                `;
+            }
+
+            let backGradientColor;
+            if( item.Grade == "고대" ){
+                backGradientColor = "#CFBC8F";
+            }else if( item.Grade == "유물"){
+                backGradientColor = "#973C06";
+            }else if( item.Grade == "전설"){
+                backGradientColor = "#945904";
+            }else if( item.Grade == "영웅"){
+                backGradientColor = "#420E55";
+            }
+
+            let weaponMargin = "";
+            if( index == 0 ){
+                weaponMargin = "margin-right: 10px;";
+            }
+
+            accessoryHtml += 
+            `<td style="text-align: center;padding-right: 10px;">
+                <div style="${weaponMargin}"><img src="${item.Icon}" style="background: linear-gradient(160deg, black, ${backGradientColor});border-radius: 5px 5px 0px 0px;" /></div>
+                <div style="background-color: ${qualityBGColor};border-radius: 0px 0px 5px 5px;${weaponMargin}">${qualityValue}</div>
+                <div class="divBox" style="margin-top: 5px;${weaponMargin}">${item.Type=="어빌리티 스톤"?"돌":item.Type}</div>
+            </td>`
+        });
+        accessoryHtml += `</tr></table>`;
+        
+        let cardsHtml = `<table><tr>`;
+        let cardsDataList = characterCardsData.Cards;
+        cardsDataList.map( function(item, index){
+            let tooltip = JSON.parse(item.Tooltip);
+            
+            let gradeImage;
+            if( "전설" == item.Grade ){
+                gradeImage = "../images/4Level.gif";
+            }else if( "영웅" == item.Grade ){
+                gradeImage = "../images/3Level.gif";
+            }else if( "희귀" == item.Grade ){
+                gradeImage = "../images/2Level.gif";
+            }else if( "고급" == item.Grade ){
+                gradeImage = "../images/1Level.gif";
+            }else if( "일반" == item.Grade ){
+                gradeImage = "../images/0Level.gif";
+            }
+
+            let awakeImage;
+            if( "5" == item.AwakeCount ){
+                awakeImage = "../images/5awake.gif";
+            }else if( "4" == item.AwakeCount ){
+                awakeImage = "../images/4awake.gif";
+            }else if( "3" == item.AwakeCount ){
+                awakeImage = "../images/3awake.gif";
+            }else if( "2" == item.AwakeCount ){
+                awakeImage = "../images/2awake.gif";
+            }else if( "1" == item.AwakeCount ){
+                awakeImage = "../images/1awake.gif";
+            }else if( "0" == item.AwakeCount ){
+                awakeImage = "../images/0awake.gif";
+            }
+
+            cardsHtml += 
+            `<td style="text-align: center;padding-right: 10px;">
+                <div style="position:relative;">
+                    <img src="${item.Icon}" style="width:100px;height:150px; z-index:1" />
+                    <div style="position:absolute;top:0px">
+                        <img src="${gradeImage}" style="width:100px;height:150px; z-index:2" />
+                        <div style="position:absolute;top:115px;left:8px">
+                            <img src="${awakeImage}" style="width:85px;height:25px; z-index:3" />
+                        </div>
+                    </div>
+                    
+                </div>
+                <div style="margin-top: 5px;">${item.Name}</div>
+            </td>`
+        });
+        cardsHtml += `</tr></table>`;
+
         characterTabBoardHtml = 
-        `<div class="container text-left" style="background-color: #181818;">
-            <div class="row">
-                <div class="col">
+        `<div class="container text-left" style="background-color: #181818;margin-left: 16px;">
+            <div class="row" style="width: 115%;">
+                <div class="col divMainBox" style="margin-right: 15px;">
                     <table class="table table-borderless">
                         <tbody>
-                            <tr><td>${combatStats[0].Type}</td><td>${combatStats[1].Type}</td></tr>
-                            <tr><td>${combatStats[0].Value}</td><td>${combatStats[1].Value}</td></tr>
-                            <tr><td>특성합</td><td>${combatStats.map(item => parseInt(item.Value)).reduce((prev, curr) => prev + curr, 0)}</td></tr>
-                            <tr><td>공격력</td><td>${attackPower}</td></tr>
-                            <tr><td>최대생명력</td><td>${fullVitality}</td></tr>
+                            <tr><td style="padding-bottom: 0px;">${combatStats[0].Type}</td><td style="padding-bottom: 0px;">${combatStats[1].Type}</td></tr>
+                            <tr><td class="tdLargeValue" style="padding-top: 0px;">${combatStats[0].Value}</td><td class="tdLargeValue" style="padding-top: 0px;">${combatStats[1].Value}</td></tr>
+                            <tr><td style="padding-top: 10px;">특성합</td><td class="tdSmallTitle" style="padding-top: 10px;">${combatStats.map(item => parseInt(item.Value)).reduce((prev, curr) => prev + curr, 0)}</td></tr>
+                            <tr><td style="padding-top: 10px;padding-bottom: 0px;">공격력</td><td class="tdSmallTitle" style="padding-top: 10px;padding-bottom: 0px;">${attackPower}</td></tr>
+                            <tr><td>최대생명력</td><td class="tdSmallTitle">${fullVitality}</td></tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-9">
                     <table class="table table-borderless">
-                        <tbody>
-                            <tr><td style="display:flex"><div>장비</div> ${effectHtml}</td></tr>
+                        <tbody class="divMainBox" style="width:100%">
+                            <tr><td style="display:flex"><div style="font-weight:bold;padding-right: 10px;">장비</div> ${effectHtml}</td></tr>
                             <tr><td style="display:flex">${equipmentHtml}</td></tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-borderless">
+                        <tbody class="divMainBox" style="width:100%">
+                            <tr><td style="display:flex"><div style="font-weight:bold;padding-right: 10px;">장신구</div> <div class="divBox" style="margin-right:10px">품질 ${Math.round(accessoryQualitySum / accessoryQualityNum)}</div> <div class="divBox">특성합 ${accessoryAttributeSum}</div></td></tr>
+                            <tr><td style="display:flex">${accessoryHtml}</td></tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-borderless">
+                        <tbody class="divMainBox" style="width:100%">
+                            <tr><td style="display:flex"><div style="font-weight:bold;padding-right: 10px;">카드</div></td></tr>
+                            <tr><td style="display:flex">${cardsHtml}</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -296,6 +449,7 @@ const renderBoard = async () =>{
         boardData = await response.json();
         data_number = boardData.length;
         max_page_number = Math.ceil(data_number/page_max_number);
+        document.getElementById("noticeBoard").style = "";
         renderNoticeBoard();
         pageNationRender();
     }else if( "캐릭터검색" == document.getElementById("boardSelect").value ){
@@ -305,15 +459,18 @@ const renderBoard = async () =>{
                 let header = new Headers({'authorization': 'bearer ' + apiKey});
                 let response = await fetch(url, {headers:header});
                 characterProfilesData = await response.json();
-                console.log("characterProfilesData : ", characterProfilesData);
 
                 url = new URL(`https://developer-lostark.game.onstove.com/armories/characters/${document.getElementById("textSearchInput").value}/equipment`);
                 response = await fetch(url, {headers:header});
                 characterEquipmentData = await response.json();
-                console.log("characterEquipmentData : ", characterEquipmentData);
 
+                url = new URL(`https://developer-lostark.game.onstove.com/armories/characters/${document.getElementById("textSearchInput").value}/cards`);
+                response = await fetch(url, {headers:header});
+                characterCardsData = await response.json();
             }
+            document.getElementById("noticeBoard").style = "padding: 15px;background-color: #181818;";
             renderCharacterBoard();
+            document.querySelector(".pagination").innerHTML = "";
         }
     }
 }
@@ -325,7 +482,7 @@ const renderBoardTitle = ()=>{
     let searchBoardHtml;
     if( "공지사항" == document.getElementById("boardSelect").value ){
         searchBoardHtml = 
-        `<div class="input-group mb-3" style="width: 400px;">
+        `<div class="input-group mb-3" style="width: 500px;">
             <label class="input-group-text" for="comboSearchSelect">Search</label>
             <select class="form-select" id="comboSearchSelect">
                 <option></option>
@@ -406,3 +563,9 @@ const popupNotice = (urlLink) =>{
     var option = "width=1024, height=768, location=no"
     window.open(urlLink, name, option);
 };
+
+document.getElementById("comboSearchSelect").addEventListener("change", ()=>{
+    console.log("change menu");
+    searchType = document.getElementById("comboSearchSelect").value;
+    renderBoard();
+});

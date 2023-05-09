@@ -1,5 +1,5 @@
 a:link{
-	color:royalblue;
+	color:aliceblue;
     transition : 1s;
 	text-decoration: none;
 }
@@ -13,7 +13,7 @@ a:hover {
 	text-decoration: none;
 }
 a:active{
-	color:blue;
+	color:aliceblue;
 	background-color: white;
 	text-decoration: none;	
 }
@@ -32,6 +32,51 @@ a:active{
     padding: 1em;
     justify-content: center;
 }
+
+.divBox{
+	display:inline-block;
+	padding-inline: 10px;
+	color: aliceblue;
+	padding-top: 3px;
+    padding-bottom: 3px;
+	background-color: #454545;
+	border-radius: 5px;
+	font-size: 14px;
+}
+
+.divMainBox{
+	display:inline-block;
+	padding-inline: 10px;
+	color: aliceblue;
+	padding-top: 3px;
+    padding-bottom: 3px;
+	background-color: #252525;
+	border-radius: 5px;
+	font-size: 14px;}
+
+.divSmallTitle{
+	display:inline-block;
+	color: aliceblue;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.table {
+	> :not(caption) > * > * {
+	  padding: 3px 3px;
+	}
+}
+
+.tdSmallTitle{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.tdLargeValue{
+	font-size: 19px;
+	font-weight: bold;
+}
+
 
 .characterMainTable{
 	background-position: center;
@@ -52,6 +97,47 @@ a:active{
 .characterMainButton{
 	--bs-btn-padding-y: 3px;
     --bs-btn-font-size: 13px;
+}
+
+.characterNav-tabs {
+    --bs-nav-tabs-border-width: 10px;
+    --bs-nav-tabs-border-radius: 10px;
+    --bs-nav-tabs-link-hover-border-color: var(--bs-secondary-bg) var(--bs-secondary-bg) var(--bs-border-color);
+    --bs-nav-tabs-link-active-color: var(--bs-emphasis-color);
+    --bs-nav-tabs-link-active-bg: var(--bs-body-bg);
+    --bs-nav-tabs-link-active-border-color: var(--bs-border-color) var(--bs-border-color) var(--bs-body-bg);
+}
+
+.characterNav {
+    --bs-nav-link-padding-x: 10px;
+    --bs-nav-link-padding-y: 10px;
+    --bs-nav-link-font-weight: bold;
+    --bs-nav-link-color: var(--bs-link-color);
+    --bs-nav-link-hover-color: var(--bs-link-hover-color);
+    --bs-nav-link-disabled-color: var(--bs-secondary-color);
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+	border-radius: 5px;
+}
+
+.characterNav-link {
+    display: block;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--bs-nav-link-color);
+    text-decoration: none;
+    border-radius: 5px 5px 0px 0px;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
+
+.characterNav-tabs .characterNav-item.show .characterNav-link, .characterNav-tabs .characterNav-link.active {
+    color: aliceblue;
+    background-color: #454545;
+    border-color: aliceblue;
 }
 
 .pagination{
