@@ -1,3 +1,0 @@
-"C:\project\java\jdk-11.0.14.1\bin\keytool" -delete -keystore "C:\project\java\jdk-11.0.14.1\lib\security\cacerts" -storepass changeit -alias root_ca
-
-"C:\project\java\jdk-11.0.14.1\bin\keytool" -import -keystore "C:\project\java\jdk-11.0.14.1\lib\security\cacerts" -storepass changeit -alias root_ca -file "C:\temp\root_ca.crt" -noprompt
